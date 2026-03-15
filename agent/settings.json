@@ -1,5 +1,5 @@
 {
-  "defaultModel": "gpt-5.3-codex-spark",
+  "defaultModel": "gpt-5.4",
   "defaultProvider": "openai-codex",
   "defaultThinkingLevel": "high",
   "lastChangelogVersion": "0.58.1",
@@ -9,6 +9,13 @@
   ],
   "theme": "dark",
   "packages": [
-    "npm:pi-mcp-adapter"
-  ]
+    "npm:pi-mcp-adapter",
+    "npm:@calesennett/pi-codex-usage",
+    "npm:pi-web-access",
+    "npm:pi-subagents"
+  ],
+  "pi-codex-usage": {
+    "usageMode": "left",
+    "refreshWindow": "7d"
+  }
 }
