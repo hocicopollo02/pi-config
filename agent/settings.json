@@ -1,0 +1,14 @@
+{
+  "defaultModel": "gpt-5.3-codex-spark",
+  "defaultProvider": "openai-codex",
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.58.1",
+  "quietStartup": true,
+  "skills": [
+    "-../../.agents/skills/vercel-react-best-practices/SKILL.md"
+  ],
+  "theme": "dark",
+  "packages": [
+    "npm:pi-mcp-adapter"
+  ]
+}

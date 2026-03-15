@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "entries": {
+    "[\"npx\",\"-y\",\"chrome-devtools-mcp@latest\"]": {
+      "resolvedBin": "/home/pablo/.npm/_npx/15c61037b1978c83/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js",
+      "resolvedAt": 1773568381188,
+      "packageVersion": "0.20.0",
+      "isJs": true
+    }
+  }
+}
