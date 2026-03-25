@@ -2,6 +2,9 @@
 description: Carga contexto base del repositorio actual antes de empezar a trabajar
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta exploración al agente `scout` y pídele un contexto comprimido del repo. Luego sintetiza tú el resultado para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
 Haz un prime del repositorio actual antes de proponer cambios.
 
 ## Objetivo

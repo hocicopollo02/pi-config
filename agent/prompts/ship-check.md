@@ -2,6 +2,12 @@
 description: Haz una última pasada de calidad antes de merge o deploy
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer`. Pídele una pre-flight check comprimida y orientada a riesgos. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión final de preparación para merge o deploy.
 
 ## Objetivo

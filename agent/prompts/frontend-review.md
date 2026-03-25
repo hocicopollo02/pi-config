@@ -2,6 +2,12 @@
 description: Ejecuta react-doctor sobre el repo actual y evalúa sus hallazgos
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer`. Pídele que ejecute el diagnóstico, analice la salida y te devuelva un informe comprimido. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión frontend del proyecto actual usando React Doctor.
 
 ## Paso 1: ejecutar diagnóstico

@@ -2,6 +2,12 @@
 description: Revisa la arquitectura de backend con foco en límites, datos, seguridad, escalabilidad y operabilidad
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer`. Pídele que inspeccione la arquitectura backend y te devuelva un resumen estructural comprimido. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión de arquitectura de backend del proyecto actual.
 
 ## Objetivo

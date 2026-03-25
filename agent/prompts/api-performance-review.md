@@ -2,6 +2,12 @@
 description: Revisa performance de APIs con foco en latencia, throughput, consultas, cache y degradación bajo carga
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer`. Pídele que investigue hot paths, consultas, métricas o hipótesis de bottleneck y te devuelva un informe comprimido. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión de performance de APIs del proyecto actual.
 
 ## Objetivo

@@ -2,6 +2,12 @@
 description: Revisa los cambios staged antes de commit y prioriza riesgos reales
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer` y pídele que examine el diff staged y te devuelva hallazgos priorizados. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión de los cambios staged en git.
 
 ## Paso 1: inspección

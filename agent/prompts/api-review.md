@@ -2,6 +2,12 @@
 description: Revisa diseño y calidad de APIs con foco en contratos, validación, errores y compatibilidad entre capas
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta revisión al agente `reviewer`. Pídele que inspeccione la API, contraste contratos y te devuelva un informe comprimido. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
+## Guía local opcional
+Si existe `REVIEW_GUIDELINES.md` junto a `.pi` o en la raíz del repo, léelo y úsalo como guía adicional del proyecto.
+
 Haz una revisión de diseño de API del proyecto actual.
 
 ## Objetivo

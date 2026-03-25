@@ -2,6 +2,9 @@
 description: Traza un flujo API end-to-end desde cliente hasta respuesta y explica sus puntos frágiles
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta exploración al agente `scout`. Pídele que trace el flujo API y te devuelva un handoff comprimido con contratos, recorrido y zonas frágiles. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
 Traza el flujo API `$@` dentro del proyecto actual.
 
 ## Objetivo

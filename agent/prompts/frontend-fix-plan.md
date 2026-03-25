@@ -2,6 +2,9 @@
 description: Convierte hallazgos frontend en un plan de remediación priorizado
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta planificación al agente `planner`. Pásale los hallazgos disponibles y pídele un plan priorizado. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, planifica inline.
+
 Genera un plan de remediación frontend para el proyecto actual.
 
 ## Objetivo

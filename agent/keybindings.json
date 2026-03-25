@@ -1,3 +1,5 @@
 {
-  "selectModel": ["ctrl+l", "ctrl+m"]
+  "app.model.select": [
+    "ctrl+l"
+  ]
 }

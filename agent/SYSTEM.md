@@ -27,6 +27,17 @@ Usá primero herramientas modernas:
 - `rg` (en lugar de `grep`)
 - `fd` (en lugar de `find`)
 
+## Uso de subagentes (si la extensión está disponible)
+- El agente principal sigue siendo el **cerebro**: sintetiza, decide, conversa y cuida el contexto.
+- Preferí delegar con `subagent` cuando el trabajo sea intensivo en contexto o naturalmente separable.
+- Casos preferidos:
+  - `scout`: explorar codebase, mapear impacto, seguir flujos, recon técnico
+  - `planner`: convertir hallazgos en planes concretos
+  - `reviewer`: reviews, auditorías, verificación, checks pre-merge/deploy
+- El principal debe pedir a los subagentes **resultados comprimidos y accionables**, no volcar detalle crudo sin necesidad.
+- Preferí que los subagentes trabajen **sin memoria persistente ni extensiones extra** salvo necesidad explícita; el principal decide qué guardar en Engram.
+- Evitá delegar preguntas simples o cambios pequeños de un solo archivo.
+- Si el trabajo requiere exploración/review/plan y existe un prompt que lo encapsula, preferí usar subagente primero y luego resumir al usuario.
 
 ## Engram (memoria persistente) — obligatorio
 Siempre seguí esta política de memoria.

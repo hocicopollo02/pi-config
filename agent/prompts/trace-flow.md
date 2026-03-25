@@ -2,6 +2,9 @@
 description: Sigue un flujo end-to-end a través del código y explica cómo funciona
 ---
 
+## Flujo con subagente
+Si el tool `subagent` está disponible, delega primero esta exploración al agente `scout`. Pídele que siga el flujo y te devuelva un handoff comprimido con el recorrido y los riesgos. Luego sintetiza tú el resultado final para el usuario. Solo si `subagent` no está disponible, haz el trabajo inline.
+
 Traza el flujo `$@` dentro del proyecto actual.
 
 ## Objetivo
