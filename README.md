@@ -1,6 +1,6 @@
-# 🏗️ Personal AI Agent Configuration
+# 🏗️ Pi Configuration Repository
 
-Sistema personalizado de configuración para un agente AI avanzado, diseñado como **Senior Architect Mentor**. Este repositorio define la personalidad, comportamiento, herramientas y guardrails de un asistente técnico de alto nivel.
+Configuración personalizada de **Pi**, un framework de IA que permite crear agentes inteligentes con comportamientos específicos. Este repositorio define cómo Pi se comporta: qué herramientas usa, cómo toma decisiones, qué reglas de seguridad sigue, y cómo recuerda información.
 
 ---
 
@@ -46,22 +46,22 @@ Sistema personalizado de configuración para un agente AI avanzado, diseñado co
 
 ## 🎯 Componentes Principales
 
-### 1. **SYSTEM.md** — El Alma del Agente
-Define la **personalidad y filosofía** del asistente:
+### 1. **SYSTEM.md** — El Alma de Pi
+Define el **comportamiento y principios** del framework:
 
-**Rol:** Senior Architect (15+ años experiencia) con mentalidad de MENTOR
+**Propósito:** Establecer cómo Pi interpreta solicitudes y genera respuestas
 
 **Principios Clave:**
-- ✅ Ayuda primero, explica después
-- ✅ Respuestas simples para preguntas simples
-- ✅ Ejecución sin burocracia
-- ✅ Tono cálido y directo (sin condescendencia)
-- ✅ Conceptos > código (enseña los "por qué")
+- ✅ Ejecución clara sin burocracia
+- ✅ Respuestas proporcionales a la complejidad de la pregunta
+- ✅ Explicación de conceptos fundamentales
+- ✅ Tono directo y accesible
+- ✅ Priorizar razonamiento sobre velocidad
 
-**Filosofía Técnica:**
-- IA es herramienta, los humanos deciden la arquitectura
-- Fundamentación antes de código
-- Propuestas con contexto: "qué", "por qué", "alternativas"
+**Enfoque Técnico:**
+- Las herramientas (IA) son medios, no fines
+- La arquitectura se decide basada en fundamentos sólidos
+- Las propuestas incluyen contexto: "qué", "por qué", "alternativas"
 
 ---
 
@@ -96,7 +96,7 @@ Configura servidores MCP externos que amplían las capacidades del agente (ej: M
 
 ---
 
-## ⚙️ Cómo Funciona
+## ⚙️ Cómo Funciona Pi
 
 ### Flujo de Ejecución
 
@@ -107,20 +107,20 @@ Configura servidores MCP externos que amplían las capacidades del agente (ej: M
              │
              ▼
 ┌─────────────────────────────────────┐
-│  SYSTEM.md determina persona        │
-│  y marco de decisiones              │
+│  SYSTEM.md define el comportamiento │
+│  y reglas de decisión               │
 └────────────┬────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────┐
 │  Selecciona agente apropiado        │
-│  (scout/planner/reviewer o principal)
+│  (scout/planner/reviewer o Pi base) │
 └────────────┬────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────┐
 │  Carga prompts especializados       │
-│  del directorio /prompts            │
+│  según el tipo de tarea             │
 └────────────┬────────────────────────┘
              │
              ▼
@@ -131,13 +131,13 @@ Configura servidores MCP externos que amplían las capacidades del agente (ej: M
              │
              ▼
 ┌─────────────────────────────────────┐
-│  Guarda en memoria persistente      │
+│  Guarda aprendizajes en memoria     │
 │  (Engram) si es relevante          │
 └────────────┬────────────────────────┘
              │
              ▼
 ┌─────────────────────────────────────┐
-│   Respuesta al usuario              │
+│   Devuelve resultado al usuario     │
 └─────────────────────────────────────┘
 ```
 
@@ -174,83 +174,83 @@ Edit `settings.json`:
 
 ## 👥 Agentes Especializados
 
-El sistema delega trabajo a **sub-agentes** para tareas intensivas en contexto:
+Pi puede delegarse a **sub-agentes** para tareas complejas o que requieren exploración profunda:
 
 ### 1. **Scout** 🔍
-**Propósito:** Exploración técnica y reconocimiento
+**Propósito:** Exploración y mapeado de codebases
 
 **Casos de uso:**
-- Mapear codebase grande
+- Mapear proyectos grandes
 - Seguir flujos de datos
 - Entender impacto de cambios
 - Análisis de dependencias
 
-**Entrada esperada:** Preguntas sobre "cómo funciona esto", "qué archivos toca", "dónde está X"
+**Entrada esperada:** "Explora esto", "Qué archivos tocan", "Dónde está X"
 
 ---
 
 ### 2. **Planner** 📋
-**Propósito:** Conversión de hallazgos en planes concretos
+**Propósito:** Conversión de análisis en planes de acción
 
 **Casos de uso:**
-- Refactorización compleja
-- Arquitectura de nuevas features
-- Planificación de optimizaciones
-- Diseño de soluciones
+- Planificar refactorizaciones
+- Diseñar nuevas features
+- Optimizaciones complejas
+- Arquitectura de soluciones
 
-**Entrada esperada:** "Crea un plan para...", "Cómo estructuraría..."
+**Entrada esperada:** "Planifica cómo...", "Diseña una solución para..."
 
 ---
 
 ### 3. **Reviewer** ✅
-**Propósito:** Auditoría, verificación y quality gates
+**Propósito:** Auditoría y verificación de calidad
 
 **Casos de uso:**
-- Code review automático
-- Pre-merge checks
+- Análisis de código
+- Verificación pre-deploy
 - Auditoría de seguridad
-- Verificación de convenciones
+- Validación de convenciones
 
-**Entrada esperada:** "Revisa esto", "Verifica calidad", "Pre-ship check"
+**Entrada esperada:** "Revisa esto", "Verifica calidad", "Pre-check"
 
 ---
 
 ## 💾 Sistema de Memoria (Engram)
 
-El agente mantiene **memoria persistente** de decisiones, patterns y aprendizajes.
+Pi puede mantener **memoria persistente** de decisiones, patrones y aprendizajes a través de sesiones.
 
-### Cuándo Guarda Automáticamente
+### Qué Se Guarda Automáticamente
 
 ```yaml
 Tipos de información guardada:
-  - ✅ Bugfixes resueltos
-  - ✅ Decisiones arquitectónicas
-  - ✅ Hallazgos no obvios del código
+  - ✅ Soluciones a problemas
+  - ✅ Decisiones de diseño
+  - ✅ Hallazgos técnicos
   - ✅ Cambios de configuración
-  - ✅ Patrones establecidos
-  - ✅ Preferencias del usuario
+  - ✅ Patrones encontrados
+  - ✅ Preferencias aprendidas
 ```
 
-### Formato de Memorias
+### Formato de Registro
 
 ```markdown
-Title:      [verbo + tema corto]
+Title:      [acción + tema]
 Type:       [bugfix | decision | architecture | discovery | pattern]
-Topic Key:  [ej: architecture/auth-model]
+Topic Key:  [ej: patterns/auth-flow]
 Scope:      [project | personal]
 Content:    
-  - What:    Qué fue
-  - Why:     Por qué importa
-  - Where:   Dónde afecta
-  - Learned: Qué aprendimos
+  - What:    Qué ocurrió
+  - Why:     Por qué es importante
+  - Where:   Dónde aplica
+  - Learned: Lecciones clave
 ```
 
-### Búsqueda de Memoria
+### Recuperación de Memoria
 
-Automáticamente busca contexto previo al iniciar:
+Pi busca contexto automáticamente:
 1. `mem_context` — Contexto general del proyecto
-2. `mem_search` — Búsqueda específica por tema
-3. `mem_get_observation` — Recupera hallazgo específico
+2. `mem_search` — Búsqueda por tema específico
+3. `mem_get_observation` — Recupera un hallazgo concreto
 
 ---
 
@@ -301,98 +301,97 @@ fd         # en lugar de find      (sintaxis intuitiva)
 
 ---
 
-## 📊 Filosofía de Trabajo
+## 📊 Lógica de Trabajo
 
-### Análisis de Complejidad
+### Estrategia de Delegación
 ```
-Pregunta simple (1 archivo)
-    → Respuesta directa (sin subagentes)
+Pregunta simple (1-2 archivos)
+    → Pi responde directamente
 
 Pregunta mediana (pocos archivos)
-    → Exploración + respuesta
+    → Exploración + análisis
 
 Pregunta compleja (codebase grande)
     → Scout explora → Planner diseña → Reviewer verifica
 ```
 
-### Calidad de Respuesta
+### Principios de Respuesta
 ```
-Conceptos > Código              # Explica primero el "qué"
-Contexto > Detalles             # Visión general antes de micro
-Alternativas > Mandato          # Opciones con pros/contras
-Fundamentación > Rapidez        # Mejor tomar 5 min extra
+Conceptos primero             # "Qué" y "por qué" antes de código
+Contexto completo             # Visión general antes de detalles
+Alternativas múltiples        # Opciones con trade-offs
+Fundamentación sólida         # Mejor análisis que velocidad
 ```
 
 ---
 
 ## 📝 Ejemplos de Uso
 
-### Ejemplo 1: Exploración de Código
+### Ejemplo 1: Análisis de Flujo
 
 ```
-Usuario: "¿Cómo fluye la autenticación en este proyecto?"
+Usuario: "¿Cómo funciona el flujo de autenticación?"
 
 Proceso:
-1. SYSTEM.md → Persona: "Enseño conceptos"
-2. Delega a Scout → Mapea flujo de auth
+1. SYSTEM.md → Define comportamiento esperado
+2. Scout mapea el flujo entre archivos
 3. Scout reporta hallazgos
-4. Respuesta: "Aquí están los 5 pasos principales... porque..."
+4. Pi sintetiza: "5 pasos principales... porque..."
 ```
 
-### Ejemplo 2: Refactorización
+### Ejemplo 2: Planificación de Cambios
 
 ```
-Usuario: "Refactoriza este componente"
+Usuario: "Planifica una refactorización de componentes"
 
 Proceso:
-1. Planner explora estado actual
-2. Propone 3 alternativas arquitectónicas
-3. Explica trade-offs de cada una
-4. Usuario elige
-5. Reviewer verifica calidad post-cambio
+1. Scout explora estado actual
+2. Planner propone 3 alternativas con trade-offs
+3. Usuario elige
+4. Reviewer valida calidad post-cambio
 ```
 
-### Ejemplo 3: Guardado de Conocimiento
+### Ejemplo 3: Memoria Persistente
 
 ```
-Descubre patrón nuevo
+Se descubre un patrón importante
     ↓
 mem_save type:pattern
-topic_key: patterns/error-handling-strategy
+topic_key: patterns/error-handling
     ↓
-Próxima vez que trabajo con error handling
+En futuras sesiones
     ↓
-mem_search → Recupera patrón + razón + dónde se usa
+mem_search recupera patrón + contexto + dónde aplicar
 ```
 
 ---
 
 ## 🔄 Ciclo de Sesión
 
-### Al Iniciar
-1. Carga `SYSTEM.md` → Define persona
-2. `mem_context` → Recupera contexto previo
-3. Listo para trabajar
+### Inicio de Sesión
+1. Carga `SYSTEM.md` → Define comportamiento
+2. `mem_context` → Recupera contexto previo (si existe)
+3. Listo para procesar solicitudes
 
-### Durante el Trabajo
-1. Elige herramienta/agente apropiado
-2. Ejecuta dentro de guardrails
-3. Guarda descubrimientos en Engram
-4. Responde con conceptos + código
+### Durante la Sesión
+1. Selecciona herramienta/agente apropiado
+2. Ejecuta dentro de guardrails (damage-control-rules)
+3. Registra descubrimientos en Engram si aplica
+4. Genera respuesta con análisis y contexto
 
-### Al Cerrar
-1. Resumen de sesión (`mem_session_summary`)
-2. Secciones: Goal, Instructions, Discoveries, Accomplished, Next Steps
-3. Memoria persistente para próxima sesión
+### Cierre de Sesión
+1. Resumen automático (`mem_session_summary`)
+2. Secciones: Goal, Discoveries, Accomplished, Next Steps
+3. Información se persiste para futuras sesiones
 
 ---
 
-## 🎓 Principio Central
+## 🎯 Principios Clave
 
-> **Sé cálido, práctico y directo.**  
-> Ayuda primero. Explica después.  
-> Preguntas simples = respuesta simple.  
-> Ejecución sin burocracia cuando la solicitud es clara.
+> **Ejecución clara y fundamentada.**  
+> Análisis antes que velocidad.  
+> Respuestas proporcionales a la complejidad.  
+> Alternativas siempre que sea relevante.
 
 ---
 
@@ -412,13 +411,13 @@ mem_search → Recupera patrón + razón + dónde se usa
 
 ## ✨ Resumen
 
-Este repositorio configura un **sistema inteligente de agente AI** que:
+Este repositorio configura un **framework de IA inteligente** que:
 
-✅ **Piensa como arquitecto senior** → Conceptos fundamentados  
-✅ **Enseña, no ordena** → Cálido y mentoreable  
-✅ **Delega inteligentemente** → Sub-agentes para complejidad  
-✅ **Recuerda todo** → Sistema Engram de memoria persistente  
-✅ **Previene daños** → Damage control rules  
-✅ **Se adapta** → Múltiples prompts y modelos  
+✅ **Responde de forma estructurada** → Análisis fundamentado  
+✅ **Delega tareas complejas** → Sub-agentes para exploración  
+✅ **Recuerda contexto** → Sistema Engram de memoria persistente  
+✅ **Previene accidentes** → Damage control rules de seguridad  
+✅ **Se personaliza** → Múltiples prompts y modelos disponibles  
+✅ **Sigue guardrails** → Decisiones dentro de límites claros  
 
-**Resultado:** Un asistente confiable, inteligente y seguro para trabajo técnico profundo. 🚀
+**Resultado:** Un sistema de IA seguro, confiable y extensible. 🚀

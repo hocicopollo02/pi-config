@@ -5,6 +5,14 @@ auth.json
 *.key
 *.pem
 
+# Sessions & Temporary files
+sessions/
+.sessions/
+*.session
+session-*.json
+/tmp/pi-chain-runs/
+.pi-chain-runs/
+
 # Temporary files
 *.tmp
 .DS_Store
