@@ -309,11 +309,13 @@ Prohibido:
 #### Reglas de Git
 ```yaml
 Requiere confirmación:
-  ⚠️  git reset --hard       # Descarta cambios locales
-  ⚠️  git push --force       # Use --force-with-lease
-  ⚠️  git stash clear        # Borra TODOS los stashes
-  ⚠️  git filter-branch      # Reescribe historia completa
-  ⚠️  git push --delete      # Borra rama remota
+  ⚠️  git reset ...           # Reescritura/rollback de índice o working tree
+  ⚠️  git push ...            # Publicación al remoto
+  ⚠️  git merge ...           # Integración de ramas
+  ⚠️  git rebase ...          # Reescritura de historia local
+  ⚠️  git commit ...          # Persistencia de cambios en historial
+  ⚠️  gh ...                  # GitHub CLI (siempre pide confirmación)
+  ⚠️  supabase ...            # Supabase CLI (siempre pide confirmación)
 ```
 
 #### Flujo de Confirmación
