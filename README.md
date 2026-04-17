@@ -10,9 +10,10 @@ Configuración personalizada de **Pi**, un framework de IA que permite crear age
 2. [Componentes Principales](#componentes-principales)
 3. [Cómo Funciona](#cómo-funciona)
 4. [Configuración](#configuración)
-5. [Agentes Especializados](#agentes-especializados)
-6. [Sistema de Memoria (Engram)](#sistema-de-memoria-engram)
-7. [Seguridad y Guardrails](#seguridad-y-guardrails)
+5. [Extensiones requeridas para este setup](#extensiones-requeridas-para-este-setup)
+6. [Agentes Especializados](#agentes-especializados)
+7. [Sistema de Memoria (Engram)](#sistema-de-memoria-engram)
+8. [Seguridad y Guardrails](#seguridad-y-guardrails)
 
 ---
 
@@ -78,13 +79,16 @@ Define el **comportamiento y principios** del framework:
 }
 ```
 
-**Paquetes Instalados:**
-- `pi-mcp-adapter` — Adaptador para Model Context Protocol
-- `@calesennett/pi-codex-usage` — Tracking de uso del Codex
-- `pi-web-access` — Acceso a web
-- `pi-subagents` — Sistema de sub-agentes
-- `pi-autoresearch` — Loop autónomo de investigación
-- `pi-bash-live-view` — Visualización de comandos bash
+**Extensiones activas en este setup (las que necesitás para usarlo igual):**
+- `npm:pi-mcp-adapter` — Adaptador MCP
+- `npm:@calesennett/pi-codex-usage` — Métricas de uso de herramientas/modelos
+- `npm:pi-web-access` — Búsqueda web y extracción de contenido
+- `npm:pi-subagents` — Delegación en subagentes (`subagent`)
+- `https://github.com/davebcn87/pi-autoresearch` — Experimentos automáticos (`init_experiment`, `run_experiment`, `log_experiment`)
+- `npm:pi-executor` — Integración Executor (`execute`) para usar APIs/tooling remoto
+- `npm:pi-bash-live-view` — Ejecución bash con render en vivo
+- `npm:pi-interview` — Formularios interactivos de preguntas/decisiones
+- `npm:pi-design-deck` — Comparativas visuales lado a lado (`design_deck`)
 
 ---
 
@@ -169,6 +173,40 @@ Edit `settings.json`:
   "https://github.com/user/repo"
 ]
 ```
+
+---
+
+## 🧩 Extensiones requeridas para este setup
+
+Si querés usar el agente **tal cual está configurado acá**, estas son las extensiones y para qué sirve cada una:
+
+- `npm:pi-mcp-adapter` → conecta Pi con servidores MCP definidos en configuración.
+- `npm:@calesennett/pi-codex-usage` → registra métricas de uso (herramientas/modelos) para seguimiento.
+- `npm:pi-web-access` → habilita búsqueda web, extracción de contenido y research asistido.
+- `npm:pi-subagents` → permite delegar trabajo en subagentes (`scout`, `planner`, `reviewer`, etc.).
+- `https://github.com/davebcn87/pi-autoresearch` → agrega loop de experimentación automática con métricas.
+- `npm:pi-executor` → habilita `execute` para usar APIs externas en sandbox con herramientas configuradas.
+- `npm:pi-bash-live-view` → mejora la ejecución de bash con salida interactiva en vivo.
+- `npm:pi-interview` → agrega formularios guiados para recoger decisiones/requisitos estructurados.
+- `npm:pi-design-deck` → crea comparativas visuales lado a lado para decisiones de UI/arquitectura/código.
+
+### Instalación rápida
+
+```bash
+pi install npm:pi-mcp-adapter
+pi install npm:@calesennett/pi-codex-usage
+pi install npm:pi-web-access
+pi install npm:pi-subagents
+pi install https://github.com/davebcn87/pi-autoresearch
+pi install npm:pi-executor
+pi install npm:pi-bash-live-view
+pi install npm:pi-interview
+pi install npm:pi-design-deck
+```
+
+También podés dejar esta lista en `agent/settings.json` dentro de `packages` para mantener el setup versionado.
+
+> Nota: además de extensiones, este setup usa MCPs definidos en `agent/mcp.json` (`chrome-devtools` y `engram`). En particular, para memoria persistente necesitás tener disponible el comando `engram` en tu sistema.
 
 ---
 
@@ -270,7 +308,7 @@ Prohibido:
 
 #### Reglas de Git
 ```yaml
-Prohibido (sin confirmación):
+Requiere confirmación:
   ⚠️  git reset --hard       # Descarta cambios locales
   ⚠️  git push --force       # Use --force-with-lease
   ⚠️  git stash clear        # Borra TODOS los stashes
@@ -282,9 +320,9 @@ Prohibido (sin confirmación):
 ```
 Comando peligroso detectado
           ↓
-¿Tiene ask: true?
+¿Hay UI interactiva?
           ├─ Sí → Pide confirmación al usuario
-          └─ No → Bloqueado silenciosamente
+          └─ No → Bloqueado (no hay forma de pedir permiso)
 ```
 
 ---
