@@ -6,7 +6,7 @@ Objetivo:
 - Detectar fallas evidentes de cobertura (edge cases) en reglas de bash.
 - Validar paths críticos contra zeroAccess/readOnly/noDelete.
 - Medir cobertura de reglas del YAML (cuántas se disparan al menos una vez en la batería).
-- Simular la política actual: read libre, ask-on-write para readOnlyPaths, block/ask para bashToolPatterns.
+- Simular la política actual: cualquier violación requiere confirmación interactiva; sin UI, se bloquea.
 """
 
 from __future__ import annotations
@@ -187,9 +187,7 @@ def evaluate_case(case: Dict[str, Any], rules: Dict[str, Any], cwd: str) -> Dict
             if ndp in command and re.search(r"\b(rm|rmdir|mv)\b", command):
                 violation_hits.append((f"noDelete:{ndp}", {"reason": f"noDelete:{ndp}", "ask": False}))
 
-        status = "allow"
-        if violation_hits:
-            status = "ask" if any(bool(hit[1].get("ask")) for hit in violation_hits) else "block"
+        status = "ask" if violation_hits else "allow"
 
         return {
             "case_id": case["id"],
@@ -206,7 +204,7 @@ def evaluate_case(case: Dict[str, Any], rules: Dict[str, Any], cwd: str) -> Dict
     if zero_match:
         return {
             "case_id": case["id"],
-            "status": "block",
+            "status": "ask",
             "hits": [("path-zeroAccess", {"reason": "path zeroAccess", "ask": False})],
             "tool": tool,
             "compile_errors": [],
@@ -235,24 +233,24 @@ def evaluate_case(case: Dict[str, Any], rules: Dict[str, Any], cwd: str) -> Dict
 def build_cases() -> List[Dict[str, Any]]:
     return [
         # Bash: destructive local commands
-        {"id": "B01_rm_rf", "tool": "bash", "command": "rm -rf dist", "expect": "block", "why": "rm debe bloquearse siempre"},
-        {"id": "B02_rm_file", "tool": "bash", "command": "rm foo.txt", "expect": "block", "why": "rm simple también bloqueado"},
-        {"id": "B03_rmdir", "tool": "bash", "command": "rmdir tmp", "expect": "block", "why": "rmdir bloqueado globalmente"},
-        {"id": "B04_sudo_rm", "tool": "bash", "command": "sudo rm -rf /tmp/test", "expect": "block", "why": "sudo rm sigue bloqueado"},
+        {"id": "B01_rm_rf", "tool": "bash", "command": "rm -rf dist", "expect": "ask", "why": "rm debe bloquearse siempre"},
+        {"id": "B02_rm_file", "tool": "bash", "command": "rm foo.txt", "expect": "ask", "why": "rm simple también bloqueado"},
+        {"id": "B03_rmdir", "tool": "bash", "command": "rmdir tmp", "expect": "ask", "why": "rmdir bloqueado globalmente"},
+        {"id": "B04_sudo_rm", "tool": "bash", "command": "sudo rm -rf /tmp/test", "expect": "ask", "why": "sudo rm sigue bloqueado"},
         {"id": "B05_git_reset_hard", "tool": "bash", "command": "git reset --hard HEAD~1", "expect": "ask", "why": "git reset --hard requiere confirmación"},
         {"id": "B06_git_clean", "tool": "bash", "command": "git clean -fdx", "expect": "ask", "why": "git clean force requiere confirmación"},
         {"id": "B07_git_push_force", "tool": "bash", "command": "git push -f origin main", "expect": "ask", "why": "push forzado requiere confirmación"},
         {"id": "B08_chmod_777", "tool": "bash", "command": "chmod 777 .", "expect": "ask", "why": "chmod 777 requiere confirmación"},
-        {"id": "B09_chmod_recursive", "tool": "bash", "command": "chmod -R 777 .", "expect": "block", "why": "chmod 777 recursivo se bloquea"},
+        {"id": "B09_chmod_recursive", "tool": "bash", "command": "chmod -R 777 .", "expect": "ask", "why": "chmod 777 recursivo se bloquea"},
         {"id": "B10_gcloud_policies", "tool": "bash", "command": "gcloud iam policies delete-policy", "expect": "ask", "why": "IAM policies requiere confirmación"},
-        {"id": "B11_gcloud_delete", "tool": "bash", "command": "gcloud compute instances delete node-1 --zone=us-east1", "expect": "block", "why": "delete de instancia sigue bloqueado"},
-        {"id": "B12_aws_delete", "tool": "bash", "command": "aws s3 rb s3://bucket-old --force", "expect": "block", "why": "AWS bucket force delete bloqueado"},
-        {"id": "B13_firebase_all_collections", "tool": "bash", "command": "firebase firestore:delete users --all-collections", "expect": "block", "why": "Firebase borrado total bloqueado"},
+        {"id": "B11_gcloud_delete", "tool": "bash", "command": "gcloud compute instances delete node-1 --zone=us-east1", "expect": "ask", "why": "delete de instancia sigue bloqueado"},
+        {"id": "B12_aws_delete", "tool": "bash", "command": "aws s3 rb s3://bucket-old --force", "expect": "ask", "why": "AWS bucket force delete bloqueado"},
+        {"id": "B13_firebase_all_collections", "tool": "bash", "command": "firebase firestore:delete users --all-collections", "expect": "ask", "why": "Firebase borrado total bloqueado"},
         {"id": "B14_vercel_remove", "tool": "bash", "command": "vercel remove --yes app", "expect": "ask", "why": "Vercel removal ahora requiere confirmación"},
-        {"id": "B15_truncate", "tool": "bash", "command": "TRUNCATE TABLE sessions;", "expect": "block", "why": "SQL masivo sigue bloqueado"},
-        {"id": "B16_drop_db", "tool": "bash", "command": "DROP DATABASE app_db;", "expect": "block", "why": "destrucción DB bloqueada"},
+        {"id": "B15_truncate", "tool": "bash", "command": "TRUNCATE TABLE sessions;", "expect": "ask", "why": "SQL masivo sigue bloqueado"},
+        {"id": "B16_drop_db", "tool": "bash", "command": "DROP DATABASE app_db;", "expect": "ask", "why": "destrucción DB bloqueada"},
         {"id": "B17_sql_delete_where", "tool": "bash", "command": "delete from users where id = 1;", "expect": "ask", "why": "DELETE con WHERE requiere confirmación"},
-        {"id": "B18_sql_delete_all", "tool": "bash", "command": "DELETE FROM users;", "expect": "block", "why": "delete total bloqueado"},
+        {"id": "B18_sql_delete_all", "tool": "bash", "command": "DELETE FROM users;", "expect": "ask", "why": "delete total bloqueado"},
         {"id": "B19_sql_update", "tool": "bash", "command": "update users set active = false where id = 1;", "expect": "ask", "why": "UPDATE requiere confirmación"},
         {"id": "B20_sql_insert", "tool": "bash", "command": "insert into users(id, name) values (1, 'Pablo');", "expect": "ask", "why": "INSERT requiere confirmación"},
         {"id": "B21_sql_alter", "tool": "bash", "command": "alter table users add column bio text;", "expect": "ask", "why": "ALTER TABLE requiere confirmación"},
@@ -262,7 +260,7 @@ def build_cases() -> List[Dict[str, Any]]:
         {"id": "B25_git_branch_delete", "tool": "bash", "command": "git branch -D feature/foo", "expect": "ask", "why": "branch force delete"},
         {"id": "B26_git_push_delete", "tool": "bash", "command": "git push origin --delete feature/foo", "expect": "ask", "why": "borra branch remota"},
         {"id": "B27_force_with_lease", "tool": "bash", "command": "git push --force-with-lease origin main", "expect": "allow", "why": "flujo permitido"},
-        {"id": "B28_chain_with_danger", "tool": "bash", "command": "git push --force-with-lease origin main; rm -rf dist", "expect": "block", "why": "comando peligroso en cadena debe detectar"},
+        {"id": "B28_chain_with_danger", "tool": "bash", "command": "git push --force-with-lease origin main; rm -rf dist", "expect": "ask", "why": "comando peligroso en cadena debe detectar"},
         {"id": "B29_supabase_reset", "tool": "bash", "command": "supabase db reset", "expect": "ask", "why": "reset de Supabase requiere confirmación"},
         {"id": "B30_supabase_push", "tool": "bash", "command": "supabase db push", "expect": "ask", "why": "push de esquema requiere confirmación"},
         {"id": "B31_supabase_repair", "tool": "bash", "command": "supabase migration repair --status reverted 20240301010101", "expect": "ask", "why": "repair de migraciones requiere confirmación"},
@@ -270,15 +268,15 @@ def build_cases() -> List[Dict[str, Any]]:
         {"id": "B33_readonly_bash_write", "tool": "bash", "command": "echo '{}' > package.json", "expect": "ask", "why": "escribir package.json requiere confirmación"},
         {"id": "B34_readonly_bash_cp", "tool": "bash", "command": "cp package.json package.json.bak", "expect": "ask", "why": "copiar path protegido cuenta como mutación"},
 
-        # Paths: zeroAccess y ask-on-write
-        {"id": "P01_read_dotenv", "tool": "read", "path": ".env", "expect": "block", "why": "zeroAccess por path en read"},
-        {"id": "P02_read_env_prod", "tool": "read", "path": ".env.production", "expect": "block", "why": "env sensible"},
-        {"id": "P03_read_kubeconfig", "tool": "read", "path": "kubeconfig", "expect": "block", "why": "archivo sensible"},
-        {"id": "P04_ls_dot_ssh", "tool": "ls", "path": "/home/pablo/.ssh/id_rsa", "expect": "block", "why": "zeroAccess ssh"},
+        # Paths: zeroAccess y confirmación interactiva
+        {"id": "P01_read_dotenv", "tool": "read", "path": ".env", "expect": "ask", "why": "zeroAccess por path en read"},
+        {"id": "P02_read_env_prod", "tool": "read", "path": ".env.production", "expect": "ask", "why": "env sensible"},
+        {"id": "P03_read_kubeconfig", "tool": "read", "path": "kubeconfig", "expect": "ask", "why": "archivo sensible"},
+        {"id": "P04_ls_dot_ssh", "tool": "ls", "path": "/home/pablo/.ssh/id_rsa", "expect": "ask", "why": "zeroAccess ssh"},
         {"id": "P05_read_package_json", "tool": "read", "path": "package.json", "expect": "allow", "why": "package.json debe poder leerse"},
         {"id": "P06_read_uv_lock", "tool": "read", "path": "uv.lock", "expect": "allow", "why": "uv.lock debe poder leerse"},
         {"id": "P07_write_dist", "tool": "write", "path": "dist/index.js", "expect": "ask", "why": "dist está protegido y debe pedir confirmación"},
-        {"id": "P08_write_dotenv", "tool": "write", "path": "./.env", "expect": "block", "why": ".env sigue en zeroAccess"},
+        {"id": "P08_write_dotenv", "tool": "write", "path": "./.env", "expect": "ask", "why": ".env sigue en zeroAccess"},
         {"id": "P09_edit_lock", "tool": "edit", "path": "package-lock.json", "expect": "ask", "why": "lockfiles requieren confirmación al editar"},
         {"id": "P10_write_package_json", "tool": "write", "path": "package.json", "expect": "ask", "why": "package.json requiere confirmación al escribir"},
         {"id": "P11_read_git_dir", "tool": "read", "path": ".git/HEAD", "expect": "allow", "why": ".git no es zeroAccess para lectura en esta política"},

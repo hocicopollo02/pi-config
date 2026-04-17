@@ -1,8 +1,8 @@
 {
-  "defaultModel": "claude-haiku-4.5",
+  "defaultModel": "gpt-5.3-codex",
   "defaultProvider": "github-copilot",
   "defaultThinkingLevel": "high",
-  "lastChangelogVersion": "0.62.0",
+  "lastChangelogVersion": "0.67.1",
   "quietStartup": true,
   "skills": [
     "-../../.agents/skills/vercel-react-best-practices/SKILL.md"
@@ -14,11 +14,14 @@
     "npm:pi-web-access",
     "npm:pi-subagents",
     "https://github.com/davebcn87/pi-autoresearch",
-    "npm:pi-bash-live-view"
+    "npm:pi-executor",
+    "npm:pi-bash-live-view",
+    "npm:pi-interview",
+    "npm:pi-design-deck"
   ],
   "pi-codex-usage": {
     "usageMode": "used",
     "refreshWindow": "7d"
   },
-  "hideThinkingBlock": true
+  "hideThinkingBlock": false
 }

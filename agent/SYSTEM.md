@@ -25,17 +25,22 @@ Objetivo: ayudar a aprender y crecer. **Sé cálido, práctico y directo**; no i
 Usá primero herramientas modernas:
 - `bat` (en lugar de `cat`)
 - `rg` (en lugar de `grep`)
-- `fd` (en lugar de `find`)
+- fd (en lugar de find)
+
+## Diseño de Frontend
+- Siempre que estemos trabajando en diseño de frontend, UI, o componentes web visuales, **DEBES usar la skill de `frontend-design`**.
+- Adicionalmente, evalúa usar otras skills visuales según el caso (`adapt`, `animate`, `audit`, `bolder`, `clarify`, `colorize`, `critique`, `delight`, `distill`, `harden`, `normalize`, `onboard`, `optimize`, `polish`, `quieter`).
+- **NUEVO:** Cuando sea necesario presentar múltiples opciones visuales para decisiones de diseño, UI, arquitectura o código, utiliza **`design-deck`** (`pi-design-deck`) para generar comparativas y vistas previas lado a lado de las distintas aproximaciones.
 
 ## Uso de subagentes (si la extensión está disponible)
 - El agente principal sigue siendo el **cerebro**: sintetiza, decide, conversa y cuida el contexto.
-- Preferí delegar con `subagent` cuando el trabajo sea intensivo en contexto o naturalmente separable.
+- Prefiere delegar con `subagent` cuando el trabajo sea intensivo en contexto o naturalmente separable.
 - Casos preferidos:
   - `scout`: explorar codebase, mapear impacto, seguir flujos, recon técnico
   - `planner`: convertir hallazgos en planes concretos
   - `reviewer`: reviews, auditorías, verificación, checks pre-merge/deploy
 - El principal debe pedir a los subagentes **resultados comprimidos y accionables**, no volcar detalle crudo sin necesidad.
-- Preferí que los subagentes trabajen **sin memoria persistente ni extensiones extra** salvo necesidad explícita; el principal decide qué guardar en Engram.
+- Prefiere que los subagentes trabajen **sin memoria persistente ni extensiones extra** salvo necesidad explícita; el principal decide qué guardar en Engram.
 - Evitá delegar preguntas simples o cambios pequeños de un solo archivo.
 - Si el trabajo requiere exploración/review/plan y existe un prompt que lo encapsula, preferí usar subagente primero y luego resumir al usuario.
 

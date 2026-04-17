@@ -107,7 +107,6 @@ export default function (pi: ExtensionAPI) {
 
 	pi.on("tool_call", async (event, ctx) => {
 		let violationReason: string | null = null;
-		let shouldAsk = false;
 
 		const checkPaths = (pathsToCheck: string[]) => {
 			for (const p of pathsToCheck) {
@@ -149,7 +148,6 @@ export default function (pi: ExtensionAPI) {
 					const regex = new RegExp(rule.pattern, rule.flags || "");
 					if (regex.test(command)) {
 						violationReason = rule.reason;
-						shouldAsk = !!rule.ask;
 						break;
 					}
 				}
@@ -167,7 +165,6 @@ export default function (pi: ExtensionAPI) {
 					for (const rop of rules.readOnlyPaths) {
 						if (command.includes(rop)) {
 							violationReason = `Bash command may modify protected path: ${rop}`;
-							shouldAsk = true;
 							break;
 						}
 					}
@@ -187,7 +184,6 @@ export default function (pi: ExtensionAPI) {
 					for (const rop of rules.readOnlyPaths) {
 						if (isPathMatch(resolved, rop, ctx.cwd)) {
 							violationReason = `Modification of protected path requires confirmation: ${rop}`;
-							shouldAsk = true;
 							break;
 						}
 					}
@@ -196,40 +192,30 @@ export default function (pi: ExtensionAPI) {
 			}
 		}
 
-		if (violationReason) {
-			if (shouldAsk && !ctx.hasUI) {
-				logBlockedAction(event.toolName, event.input, violationReason, "blocked_no_ui_confirmation_required");
-				ctx.abort();
-				return {
-					block: true,
-					reason: `🛑 BLOCKED by Damage-Control: ${violationReason} (interactive confirmation required, but UI is unavailable)\n\nDO NOT attempt to work around this restriction. Report the block to the user and ask for a safer or interactive path.`,
-				};
-			}
+		if (!violationReason) {
+			return { block: false };
+		}
 
-			if (shouldAsk) {
-				const confirmed = await ctx.ui.confirm(
-					"🛡️ Damage-Control Confirmation",
-					`Dangerous command detected: ${violationReason}\n\nCommand: ${isToolCallEventType("bash", event) ? event.input.command : JSON.stringify(event.input)}\n\nDo you want to proceed?`,
-					{ timeout: 30000 },
-				);
+		const inputDescription = isToolCallEventType("bash", event) ? event.input.command : JSON.stringify(event.input);
 
-				if (!confirmed) {
-					ctx.ui.setStatus(`⚠️ Last Violation Blocked: ${violationReason.slice(0, 30)}...`);
-					logBlockedAction(event.toolName, event.input, violationReason, "blocked_by_user");
-					ctx.abort();
-					return {
-						block: true,
-						reason: `🛑 BLOCKED by Damage-Control: ${violationReason} (User denied)\n\nDO NOT attempt to work around this restriction. DO NOT retry with alternative commands, paths, or approaches that achieve the same result. Report this block to the user exactly as stated and ask how they would like to proceed.`,
-					};
-				}
+		if (!ctx.hasUI) {
+			logBlockedAction(event.toolName, event.input, violationReason, "blocked_no_ui_confirmation_required");
+			ctx.abort();
+			return {
+				block: true,
+				reason: `🛑 BLOCKED by Damage-Control: ${violationReason} (interactive confirmation required, but UI is unavailable)\n\nDO NOT attempt to work around this restriction. Report the block to the user and ask for a safer or interactive path.`,
+			};
+		}
 
-				logBlockedAction(event.toolName, event.input, violationReason, "confirmed_by_user");
-				return { block: false };
-			}
+		const confirmed = await ctx.ui.confirm(
+			"🛡️ Damage-Control Confirmation",
+			`Damage-Control detected a protected action:\n\nReason: ${violationReason}\nTool: ${event.toolName}\nInput: ${inputDescription}\n\nDo you want to allow it?`,
+			{ timeout: 30000 },
+		);
 
-			ctx.ui.notify(`🛑 Damage-Control: Blocked ${event.toolName} due to ${violationReason}`);
-			ctx.ui.setStatus(`⚠️ Last Violation: ${violationReason.slice(0, 30)}...`);
-			logBlockedAction(event.toolName, event.input, violationReason, "blocked");
+		if (!confirmed) {
+			ctx.ui.setStatus(`⚠️ Last Violation Blocked: ${violationReason.slice(0, 30)}...`);
+			logBlockedAction(event.toolName, event.input, violationReason, "blocked_by_user");
 			ctx.abort();
 			return {
 				block: true,
@@ -237,6 +223,8 @@ export default function (pi: ExtensionAPI) {
 			};
 		}
 
+		logBlockedAction(event.toolName, event.input, violationReason, "confirmed_by_user");
+		ctx.ui.setStatus(`🛡️ Damage-Control approved: ${violationReason.slice(0, 30)}...`);
 		return { block: false };
 	});
 }
