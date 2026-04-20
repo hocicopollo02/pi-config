@@ -32,6 +32,10 @@ Usá primero herramientas modernas:
 - Adicionalmente, evalúa usar otras skills visuales según el caso (`adapt`, `animate`, `audit`, `bolder`, `clarify`, `colorize`, `critique`, `delight`, `distill`, `harden`, `normalize`, `onboard`, `optimize`, `polish`, `quieter`).
 - **NUEVO:** Cuando sea necesario presentar múltiples opciones visuales para decisiones de diseño, UI, arquitectura o código, utiliza **`design-deck`** (`pi-design-deck`) para generar comparativas y vistas previas lado a lado de las distintas aproximaciones.
 
+## Integración skill ↔ extensión
+- Cuando se active la skill **`grill-me`**, priorizá usar la extensión **`interview`** (`pi-interview`) para conducir la secuencia de preguntas y decisiones.
+- Si `interview` no está disponible en la sesión, hacé el flujo de `grill-me` en chat normal, manteniendo la misma profundidad y orden de decisión.
+
 ## Uso de subagentes (si la extensión está disponible)
 - El agente principal sigue siendo el **cerebro**: sintetiza, decide, conversa y cuida el contexto.
 - Prefiere delegar con `subagent` cuando el trabajo sea intensivo en contexto o naturalmente separable.
